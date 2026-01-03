@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Júlia & João | Recap 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=YouTube+Sans:wght@700&family=Poppins:wght@300;400;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --yt-red: #FF0000;
+            --yt-pink: #FF0080;
+            --bg-dark: #030303;
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* Animação de Fundo */
+        .bg-gradient {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #030303, #25052d, #050a1a);
+            background-size: 400% 400%;
+            animation: moveBG 15s ease infinite;
+            z-index: -2;
+        }
+
+        @keyframes moveBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        h1 { font-family: 'YouTube Sans'; font-size: 3.5rem; margin: 0; }
+        .highlight { color: var(--yt-pink); }
+
+        /* Contador */
+        #timer {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin: 20px 0;
+            background: linear-gradient(90deg, #fff, var(--yt-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ÁLBUM DE FOTOS */
+        .album-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            max-width: 900px;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .photo-card {
+            background: white;
+            padding: 8px 8px 25px 8px;
+            transform: rotate(var(--r));
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        .photo-card:hover { transform: rotate(0deg) scale(1.1); z-index: 10; }
+
+        .photo-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        /* Estilo Filmes/Música */
+        .wrapped-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid var(--yt-pink);
+            width: 90%; max-width: 400px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-gradient"></div>
+
+    <section>
+        <h2 class="reveal">YouTube Recap 2025</h2>
+        <h1 class="reveal">Júlia & João</h1>
+        <p class="reveal" style="font-style: italic; color: #aaa; margin-top: 20px;">
+            "One time, mesmo de longe, I wanna be yours..."
+        </p>
+    </section>
+
+    <section>
+        <h2 class="reveal">O nosso "Play" eterno:</h2>
+        <div id="timer" class="reveal">00d 00h 00m 00s</div>
+        <p class="reveal">Desde 04/10/2025 às 12:00</p>
+    </section>
+
+    <section>
+        <h1 class="reveal">O Teu Álbum <span class="highlight">Visual</span></h1>
+        <div class="album-grid reveal">
+            <div class="photo-card" style="--r: -3deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456862855574982748/IMG-20251107-WA0046.jpg?ex=6959e8c3&is=69589743&hm=abce30b66add75d6a06e793515b07bee46d7a59a23e84786c5ba4916db912157&" alt=""></div>
+            <div class="photo-card" style="--r: 2deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456862856464044297/IMG-20251107-WA0006.jpg?ex=6959e8c4&is=69589744&hm=8d52afc37312e4b459b2ea55d4e315e6015de38dee74c5cf43b6f5640fd123cb&" alt=""></div>
+            <div class="photo-card" style="--r: -2deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456862855990345850/IMG-20251107-WA0025.jpg?ex=6959e8c4&is=69589744&hm=0fb7ae9fddfd182426b25913dd992878b92d851ff8fefa3d21d1ec305a454e0d&" alt=""></div>
+            <div class="photo-card" style="--r: 4deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456862857328197886/IMG-20251108-WA0060.jpg?ex=6959e8c4&is=69589744&hm=055670719d97fcf35568322057460121cda1a2eca03fe9efe0ef330487ccb091&" alt=""></div>
+            <div class="photo-card" style="--r: -1deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456862856934064152/IMG-20251110-WA0001.jpg?ex=6959e8c4&is=69589744&hm=4c97f472e3343f3dfc3695fa169e98e8a7207b18e9996942fefab31dcc03d892&" alt=""></div>
+            <div class="photo-card" style="--r: 3deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456862858565386292/IMG-20251224-WA0004.jpg?ex=6959e8c4&is=69589744&hm=eb451d81bd75a0ec0fed31849b3f2d58f7cec5909df89775d45fdab321cbe18e&" alt=""></div>
+            <div class="photo-card" style="--r: -4deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456862858137571429/IMG-20251213-WA0008.jpg?ex=6959e8c4&is=69589744&hm=39982611a65d6e047089c0d59e2525fbe2cd36d1d4977b180b38f26787d8c1b2&" alt=""></div>
+            <div class="photo-card" style="--r: 2deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456862859244994722/IMG-20251227-WA0018.jpg?ex=6959e8c4&is=69589744&hm=678eb67054c7d3a0ddd6b0b6b98f1570d87215695a40494e725c169fb718602c&" alt=""></div>
+            <div class="photo-card" style="--r: -2deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456862858871705600/IMG-20251226-WA0011.jpg?ex=6959e8c4&is=69589744&hm=a3a7ac4c666fe77189b548c733c33ae778597446a135ef3f6b96c258f39ab4d9&" alt=""></div>
+            <div class="photo-card" style="--r: 1deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456863355263520868/IMG-20251231-WA0005.jpg?ex=6959e93b&is=695897bb&hm=37be1db9ec8156f3a4f0f8274db4990675fc4fcc9e3749d0654ecc1e987be41d&" alt=""></div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="reveal">Top Músicas & Filmes</h2>
+        <div class="wrapped-card reveal">
+            <h3 class="highlight">🎵 No teu ouvido:</h3>
+            <p><strong>Life Goes On</strong> - BTS</p>
+            <p style="font-size: 0.9rem; opacity: 0.8;">"Como o eco na floresta, o dia voltará como se nada tivesse acontecido."</p>
+        </div>
+        <div class="wrapped-card reveal">
+            <h3 class="highlight">🍿 No teu ecrã:</h3>
+            <p>• A Culpa é das Estrelas (Ok? Ok.)</p>
+            <p>• 7 Vidas de um Cachorro</p>
+            <p>• A Bela e a Fera (Hihi! ✨)</p>
+        </div>
+    </section>
+
+    <section>
+        <h1 class="reveal">Júlia,</h1>
+        <p class="reveal">A vida continua (Life Goes On), mas com o João ao teu lado é muito melhor.</p>
+        <div class="reveal" style="font-size: 4rem;">❤️</div>
+        <p class="reveal" style="opacity: 0.5;">Fim da Sessão 2025</p>
+    </section>
+
+    <script>
+        // Lógica do Temporizador
+        const startDate = new Date("2025-10-04T12:00:00").getTime();
+        function updateTimer() {
+            const now = new Date().getTime();
+            const diff = now - startDate;
+            const d = Math.floor(diff / (1000*60*60*24));
+            const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+            const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+            const s = Math.floor((diff % (1000*60)) / 1000);
+            document.getElementById("timer").innerHTML = `${d}d ${h}h ${m}m ${s}s`;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // Reveal no Scroll
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            reveals.forEach(r => {
+                var top = r.getBoundingClientRect().top;
+                if (top < window.innerHeight - 100) r.classList.add("active");
+            });
+        }
+        window.addEventListener("scroll", reveal);
+        reveal();
+    </script>
+</body>
+  </html>
+  
