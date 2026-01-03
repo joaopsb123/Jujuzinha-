@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Júlia & João | Recap 2025</title>
-    <link href="https://fonts.googleapis.com/css2?family=YouTube+Sans:wght@700&family=Poppins:wght@300;400;900&display=swap" rel="stylesheet">
+    <title>Júlia & João | Infinito</title>
+    <link href="https://fonts.googleapis.com/css2?family=YouTube+Sans:wght@700&family=Poppins:wght@300;400;600;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --yt-red: #FF0000;
             --yt-pink: #FF0080;
+            --yt-blue: #00f2ff;
             --bg-dark: #030303;
+            --glass: rgba(255, 255, 255, 0.1);
         }
 
         body, html {
@@ -18,167 +19,210 @@
             color: white;
             font-family: 'Poppins', sans-serif;
             scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
-        /* Animação de Fundo */
+        /* Fundo Estelar e Gradiente */
         .bg-gradient {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #030303, #25052d, #050a1a);
-            background-size: 400% 400%;
-            animation: moveBG 15s ease infinite;
+            background: radial-gradient(circle at center, #1a052d 0%, #030303 100%);
             z-index: -2;
         }
 
-        @keyframes moveBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        #canvas-stars {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
         }
 
-        section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 50px 20px;
+        /* Navegação */
+        nav {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+            padding: 10px 25px; border-radius: 50px; z-index: 1000;
+            border: 1px solid var(--yt-pink); display: flex; gap: 20px;
         }
+        nav a { color: white; text-decoration: none; font-size: 0.9rem; font-weight: 600; }
 
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s ease-out; }
+        section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 80px 20px; box-sizing: border-box; }
+        .reveal { opacity: 0; transform: translateY(40px); transition: 1.2s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        h1 { font-family: 'YouTube Sans'; font-size: 3.5rem; margin: 0; }
-        .highlight { color: var(--yt-pink); }
+        h1 { font-family: 'YouTube Sans'; font-size: clamp(2.5rem, 8vw, 4rem); margin: 0; }
+        .highlight { color: var(--yt-pink); text-shadow: 0 0 15px var(--yt-pink); }
 
-        /* Contador */
-        #timer {
-            font-size: 2.8rem;
-            font-weight: 900;
-            margin: 20px 0;
-            background: linear-gradient(90deg, #fff, var(--yt-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        /* Contador Estilizado */
+        .timer-box { background: var(--glass); padding: 30px; border-radius: 30px; border: 1px solid var(--yt-pink); }
+        #timer { font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 900; margin: 15px 0; color: white; }
 
-        /* ÁLBUM DE FOTOS */
-        .album-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            max-width: 900px;
-            width: 100%;
-            margin-top: 30px;
-        }
+        /* Álbum */
+        .album-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; max-width: 800px; margin-top: 30px; }
+        @media (min-width: 600px) { .album-grid { grid-template-columns: repeat(3, 1fr); } }
 
         .photo-card {
-            background: white;
-            padding: 8px 8px 25px 8px;
-            transform: rotate(var(--r));
-            transition: 0.3s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            background: white; padding: 5px 5px 20px 5px; transform: rotate(var(--r));
+            transition: 0.4s; box-shadow: 0 10px 20px rgba(0,0,0,0.5); cursor: pointer;
         }
+        .photo-card:hover { transform: rotate(0deg) scale(1.1) translateY(-10px); z-index: 10; }
+        .photo-card img { width: 100%; height: 150px; object-fit: cover; }
 
-        .photo-card:hover { transform: rotate(0deg) scale(1.1); z-index: 10; }
+        /* Timeline */
+        .timeline { max-width: 600px; width: 100%; margin-top: 40px; }
+        .tl-item { background: var(--glass); margin: 10px 0; padding: 20px; border-radius: 15px; border-left: 4px solid var(--yt-pink); text-align: left; }
 
-        .photo-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
+        /* Cartas */
+        .letters-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 30px; }
+        .letter {
+            width: 80px; height: 60px; background: var(--yt-pink); border-radius: 5px;
+            position: relative; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; font-size: 1.5rem;
         }
+        .letter:hover { transform: translateY(-10px); background: #ff4da6; }
 
-        /* Estilo Filmes/Música */
-        .wrapped-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 20px;
-            border: 1px solid var(--yt-pink);
-            width: 90%; max-width: 400px;
-            margin: 10px;
+        /* Fullscreen Slide */
+        #fullscreen-slider {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 2000; display: none;
+            scroll-snap-type: y mandatory; overflow-y: scroll;
         }
+        .slide { height: 100vh; width: 100%; scroll-snap-align: start; display: flex; justify-content: center; align-items: center; position: relative; }
+        .slide img { max-width: 90%; max-height: 70%; object-fit: contain; z-index: 5; border-radius: 10px; }
+        .slide-bg { position: absolute; width: 100%; height: 100%; object-fit: cover; filter: blur(25px) brightness(0.3); z-index: 1; }
+        .slide-caption { position: absolute; bottom: 10%; width: 80%; z-index: 10; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 15px; font-size: 0.9rem; line-height: 1.4; }
+        .close-btn { position: fixed; top: 20px; right: 20px; z-index: 2100; background: white; border: none; color: black; width: 40px; height: 40px; border-radius: 50%; font-weight: bold; cursor: pointer; }
+
+        .heart { position: fixed; color: var(--yt-pink); font-size: 20px; z-index: 500; pointer-events: none; animation: float 5s linear infinite; }
+        @keyframes float { 0% { transform: translateY(100vh) scale(0); opacity: 1; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
     </style>
 </head>
 <body>
 
     <div class="bg-gradient"></div>
+    <canvas id="canvas-stars"></canvas>
 
-    <section>
-        <h2 class="reveal">Recap de 2025</h2>
-        <h1 class="reveal">Júlia & João</h1>
-        <p class="reveal" style="font-style: italic; color: #aaa; margin-top: 20px;">
-            "One time, mesmo de longe, I wanna be yours..."
-        </p>
-    </section>
+    <nav>
+        <a href="#home">Início</a>
+        <a href="#fotos">Fotos</a>
+        <a href="#mensagens">Cartas</a>
+        <a href="#futuro">2026</a>
+    </nav>
 
-    <section>
-        <h2 class="reveal">O nosso "Play" eterno:</h2>
-        <div id="timer" class="reveal">00d 00h 00m 00s</div>
-        <p class="reveal">Desde 04/10/2025 às 12:00</p>
-    </section>
-
-    <section>
-        <h1 class="reveal">O Teu Álbum <span class="highlight">Visual</span></h1>
-        <div class="album-grid reveal">
-            <div class="photo-card" style="--r: -3deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456862855574982748/IMG-20251107-WA0046.jpg?ex=6959e8c3&is=69589743&hm=abce30b66add75d6a06e793515b07bee46d7a59a23e84786c5ba4916db912157&" alt=""></div>
-            <div class="photo-card" style="--r: 2deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456862856464044297/IMG-20251107-WA0006.jpg?ex=6959e8c4&is=69589744&hm=8d52afc37312e4b459b2ea55d4e315e6015de38dee74c5cf43b6f5640fd123cb&" alt=""></div>
-            <div class="photo-card" style="--r: -2deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456862855990345850/IMG-20251107-WA0025.jpg?ex=6959e8c4&is=69589744&hm=0fb7ae9fddfd182426b25913dd992878b92d851ff8fefa3d21d1ec305a454e0d&" alt=""></div>
-            <div class="photo-card" style="--r: 4deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456862857328197886/IMG-20251108-WA0060.jpg?ex=6959e8c4&is=69589744&hm=055670719d97fcf35568322057460121cda1a2eca03fe9efe0ef330487ccb091&" alt=""></div>
-            <div class="photo-card" style="--r: -1deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456862856934064152/IMG-20251110-WA0001.jpg?ex=6959e8c4&is=69589744&hm=4c97f472e3343f3dfc3695fa169e98e8a7207b18e9996942fefab31dcc03d892&" alt=""></div>
-            <div class="photo-card" style="--r: 3deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456862858565386292/IMG-20251224-WA0004.jpg?ex=6959e8c4&is=69589744&hm=eb451d81bd75a0ec0fed31849b3f2d58f7cec5909df89775d45fdab321cbe18e&" alt=""></div>
-            <div class="photo-card" style="--r: -4deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456862858137571429/IMG-20251213-WA0008.jpg?ex=6959e8c4&is=69589744&hm=39982611a65d6e047089c0d59e2525fbe2cd36d1d4977b180b38f26787d8c1b2&" alt=""></div>
-            <div class="photo-card" style="--r: 2deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456862859244994722/IMG-20251227-WA0018.jpg?ex=6959e8c4&is=69589744&hm=678eb67054c7d3a0ddd6b0b6b98f1570d87215695a40494e725c169fb718602c&" alt=""></div>
-            <div class="photo-card" style="--r: -2deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456862858871705600/IMG-20251226-WA0011.jpg?ex=6959e8c4&is=69589744&hm=a3a7ac4c666fe77189b548c733c33ae778597446a135ef3f6b96c258f39ab4d9&" alt=""></div>
-            <div class="photo-card" style="--r: 1deg;"><img src="https://cdn.discordapp.com/attachments/1389035025051287643/1456863355263520868/IMG-20251231-WA0005.jpg?ex=6959e93b&is=695897bb&hm=37be1db9ec8156f3a4f0f8274db4990675fc4fcc9e3749d0654ecc1e987be41d&" alt=""></div>
+    <section id="home">
+        <h2 class="reveal">A nossa conexão é</h2>
+        <h1 class="reveal highlight">Inevitável</h1>
+        <div class="timer-box reveal" style="margin-top: 30px;">
+            <p>Juntos há exatamente:</p>
+            <div id="timer">00d 00h 00m 00s</div>
+            <p style="font-size: 0.8rem; opacity: 0.7;">Desde o dia em que tudo mudou (04/10/2025)</p>
         </div>
     </section>
 
-    <section>
-        <h2 class="reveal">Top Músicas & Filmes</h2>
-        <div class="wrapped-card reveal">
-            <h3 class="highlight">🎵 No teu ouvido:</h3>
-            <p><strong>Life Goes On</strong> - BTS</p>
-            <p style="font-size: 0.9rem; opacity: 0.8;">"Como o eco na floresta, o dia voltará como se nada tivesse acontecido."</p>
+    <section id="fotos">
+        <h1 class="reveal">Recap <span class="highlight">Visual</span></h1>
+        <p class="reveal">Clica numa foto para mergulhar no momento</p>
+        <div class="album-grid reveal" id="grid-container"></div>
+    </section>
+
+    <section id="mensagens">
+        <h1 class="reveal">Cartas <span class="highlight">Para Ti</span></h1>
+        <p class="reveal">Escolhe um envelope para ler...</p>
+        <div class="letters-container reveal">
+            <div class="letter" onclick="alert('És a razão do meu sorriso todos os dias. ❤️')">✉️</div>
+            <div class="letter" onclick="alert('Mesmo de longe, sinto-te aqui ao meu lado. 🫂')">✉️</div>
+            <div class="letter" onclick="alert('Obrigado por seres a minha melhor amiga e amor. ✨')">✉️</div>
+            <div class="letter" onclick="alert('O nosso pra sempre começou naquele play. ♾️')">✉️</div>
         </div>
-        <div class="wrapped-card reveal">
-            <h3 class="highlight">🍿 No teu ecrã:</h3>
-            <p>• A Culpa é das Estrelas (Ok? Ok.)</p>
-            <p>• 7 Vidas de um Cachorro</p>
-            <p>• A Bela e a Fera (Hihi! ✨)</p>
+
+        <div class="timeline reveal">
+            <div class="tl-item"><b>Outubro:</b> Onde o nosso destino se cruzou.</div>
+            <div class="tl-item"><b>Novembro:</b> Cada conversa, um motivo para te amar mais.</div>
+            <div class="tl-item"><b>Dezembro:</b> A certeza de que és tu a pessoa certa.</div>
         </div>
     </section>
 
-    <section>
-        <h1 class="reveal">Júlia,</h1>
-        <p class="reveal">A vida continua (Life Goes On), mas com o João ao teu lado é muito melhor.</p>
-        <div class="reveal" style="font-size: 4rem;">❤️</div>
-        <p class="reveal" style="opacity: 0.5;">Fim da Sessão 2025</p>
+    <section id="futuro">
+        <h1 class="reveal">O Próximo <span class="highlight">Capítulo</span></h1>
+        <p class="reveal">O 2025 foi lindo, mas o 2026 vai ser nosso.</p>
+        <div class="wrapped-card reveal" style="background: var(--glass); padding: 20px; border-radius: 20px; border: 1px solid var(--yt-blue);">
+            <p>🎵 <b>A Nossa Música:</b> Life Goes On - BTS</p>
+            <p>🎬 <b>Cinema:</b> A Culpa é das Estrelas & A Bela e a Fera</p>
+        </div>
+        <h2 class="reveal" style="margin-top: 50px;">Amo-te, Júlia. ❤️</h2>
     </section>
+
+    <div id="fullscreen-slider">
+        <button class="close-btn" onclick="closeSlider()">✕</button>
+    </div>
 
     <script>
-        // Lógica do Temporizador
-        const startDate = new Date("2025-10-04T12:00:00").getTime();
-        function updateTimer() {
-            const now = new Date().getTime();
-            const diff = now - startDate;
-            const d = Math.floor(diff / (1000*60*60*24));
-            const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-            const m = Math.floor((diff % (1000*60*60)) / (1000*60));
-            const s = Math.floor((diff % (1000*60)) / 1000);
-            document.getElementById("timer").innerHTML = `${d}d ${h}h ${m}m ${s}s`;
-        }
-        setInterval(updateTimer, 1000);
-        updateTimer();
+        const photos = [
+            {url: "https://cdn.discordapp.com/attachments/1389035025051287643/1456862855574982748/IMG-20251107-WA0046.jpg?ex=6959e8c3&is=69589743&hm=abce30b66add75d6a06e793515b07bee46d7a59a23e84786c5ba4916db912157&", cap: "O dia em que o meu mundo parou para te ver..."},
+            {url: "https://cdn.discordapp.com/attachments/1389035025051287643/1456862856464044297/IMG-20251107-WA0006.jpg?ex=6959e8c4&is=69589744&hm=8d52afc37312e4b459b2ea55d4e315e6015de38dee74c5cf43b6f5640fd123cb&", cap: "Amo cada detalhe teu, Júlia."},
+            {url: "https://cdn.discordapp.com/attachments/1389035025051287643/1456862855990345850/IMG-20251107-WA0025.jpg?ex=6959e8c4&is=69589744&hm=0fb7ae9fddfd182426b25913dd992878b92d851ff8fefa3d21d1ec305a454e0d&", cap: "Tu tens aquela luz que ninguém mais tem."},
+            {url: "https://cdn.discordapp.com/attachments/1389035025051287643/1456862857328197886/IMG-20251108-WA0060.jpg?ex=6959e8c4&is=69589744&hm=055670719d97fcf35568322057460121cda1a2eca03fe9efe0ef330487ccb091&", cap: "Contigo tudo é mais colorido."},
+            {url: "https://cdn.discordapp.com/attachments/1389035025051287643/1456862856934064152/IMG-20251110-WA0001.jpg?ex=6959e8c4&is=69589744&hm=4c97f472e3343f3dfc3695fa169e98e8a7207b18e9996942fefab31dcc03d892&", cap: "O meu lugar favorito é onde tu estiveres."},
+            {url: "https://cdn.discordapp.com/attachments/1389035025051287643/1456862858565386292/IMG-20251224-WA0004.jpg?ex=6959e8c4&is=69589744&hm=eb451d81bd75a0ec0fed31849b3f2d58f7cec5909df89775d45fdab321cbe18e&", cap: "Natal com o melhor presente do mundo: Tu."},
+            {url: "https://cdn.discordapp.com/attachments/1389035025051287643/1456862858137571429/IMG-20251213-WA0008.jpg?ex=6959e8c4&is=69589744&hm=39982611a65d6e047089c0d59e2525fbe2cd36d1d4977b180b38f26787d8c1b2&", cap: "Sorriso que acalma a minha alma."},
+            {url: "https://cdn.discordapp.com/attachments/1389035025051287643/1456862859244994722/IMG-20251227-WA0018.jpg?ex=6959e8c4&is=69589744&hm=678eb67054c7d3a0ddd6b0b6b98f1570d87215695a40494e725c169fb718602c&", cap: "Dona de todo o meu amor."},
+            {url: "https://cdn.discordapp.com/attachments/1389035025051287643/1456862858871705600/IMG-20251226-WA0011.jpg?ex=6959e8c4&is=69589744&hm=a3a7ac4c666fe77189b548c733c33ae778597446a135ef3f6b96c258f39ab4d9&", cap: "Minha princesa linda."},
+            {url: "https://cdn.discordapp.com/attachments/1389035025051287643/1456863355263520868/IMG-20251231-WA0005.jpg?ex=6959e93b&is=695897bb&hm=37be1db9ec8156f3a4f0f8274db4990675fc4fcc9e3749d0654ecc1e987be41d&", cap: "A fechar o ano da melhor forma... ao teu lado."}
+        ];
 
-        // Reveal no Scroll
-        function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            reveals.forEach(r => {
-                var top = r.getBoundingClientRect().top;
-                if (top < window.innerHeight - 100) r.classList.add("active");
+        const grid = document.getElementById('grid-container');
+        photos.forEach((p, i) => {
+            const rot = (Math.random() * 12 - 6).toFixed(1);
+            grid.innerHTML += `<div class="photo-card" style="--r: ${rot}deg;" onclick="openSlider(${i})"><img src="${p.url}"></div>`;
+        });
+
+        function openSlider(index) {
+            const slider = document.getElementById('fullscreen-slider');
+            slider.innerHTML = '<button class="close-btn" onclick="closeSlider()">✕</button>';
+            photos.forEach(p => {
+                slider.innerHTML += `<div class="slide"><img class="slide-bg" src="${p.url}"><img src="${p.url}"><div class="slide-caption">“${p.cap}”</div></div>`;
             });
+            slider.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            slider.querySelectorAll('.slide')[index].scrollIntoView();
         }
-        window.addEventListener("scroll", reveal);
-        reveal();
+        function closeSlider() { document.getElementById('fullscreen-slider').style.display = 'none'; document.body.style.overflow = 'auto'; }
+
+        // Temporizador
+        const startDate = new Date("2025-10-04T12:00:00").getTime();
+        setInterval(() => {
+            const diff = new Date().getTime() - startDate;
+            const d = Math.floor(diff / 86400000), h = Math.floor((diff % 86400000) / 3600000), m = Math.floor((diff % 3600000) / 60000), s = Math.floor((diff % 60000) / 1000);
+            document.getElementById("timer").innerHTML = `${d}d ${h}h ${m}m ${s}s`;
+        }, 1000);
+
+        // Estrelas Canvas
+        const canvas = document.getElementById('canvas-stars'), ctx = canvas.getContext('2d');
+        let stars = [];
+        function initStars() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            stars = [];
+            for(let i=0; i<150; i++) stars.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, size: Math.random()*2, opacity: Math.random()});
+        }
+        function drawStars() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            stars.forEach(s => {
+                ctx.fillStyle = `rgba(255,255,255,${s.opacity})`;
+                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill();
+                s.opacity += (Math.random()-0.5)*0.05;
+                if(s.opacity<0) s.opacity=0; if(s.opacity>1) s.opacity=1;
+            });
+            requestAnimationFrame(drawStars);
+        }
+        window.addEventListener('resize', initStars);
+        initStars(); drawStars();
+
+        // Corações
+        setInterval(() => {
+            const h = document.createElement('div'); h.classList.add('heart'); h.innerHTML = '❤️';
+            h.style.left = Math.random() * 100 + 'vw'; h.style.animationDuration = (Math.random()*2+3)+'s';
+            document.body.appendChild(h); setTimeout(() => h.remove(), 5000);
+        }, 800);
+
+        // Scroll Reveal
+        window.addEventListener("scroll", () => {
+            document.querySelectorAll(".reveal").forEach(r => { if(r.getBoundingClientRect().top < window.innerHeight - 80) r.classList.add("active"); });
+        });
     </script>
 </body>
 </html>
